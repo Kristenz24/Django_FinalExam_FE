@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'profile_KRM.dart';
 
 class SignUpPage extends StatefulWidget {
   const SignUpPage({super.key});
@@ -34,8 +35,21 @@ class _SignUpPageState extends State<SignUpPage> {
           headers: {"Content-Type": "application/json"},
           body: jsonEncode(requestData));
 
-      print("Response Status: ${response.statusCode}");
-      print("Response Body: ${response.body}");
+      print("Response Status: \\${response.statusCode}");
+      print("Response Body: \\${response.body}");
+
+      if (response.statusCode == 201) {
+        // Registration successful, navigate to profile page
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (context) => ProfilePage(
+              username: _usernameController.text,
+              email: _emailController.text,
+            ),
+          ),
+        );
+      }
     } catch (e) {
       print("Error: $e");
     }
@@ -44,7 +58,7 @@ class _SignUpPageState extends State<SignUpPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Sign Up')),
+      appBar: AppBar(title: Text('Register')),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
